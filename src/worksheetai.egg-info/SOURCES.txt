@@ -1,0 +1,14 @@
+README.md
+pyproject.toml
+src/worksheetai/__init__.py
+src/worksheetai/ai.py
+src/worksheetai/cli.py
+src/worksheetai/converters.py
+src/worksheetai/main.py
+src/worksheetai/models.py
+src/worksheetai.egg-info/PKG-INFO
+src/worksheetai.egg-info/SOURCES.txt
+src/worksheetai.egg-info/dependency_links.txt
+src/worksheetai.egg-info/entry_points.txt
+src/worksheetai.egg-info/requires.txt
+src/worksheetai.egg-info/top_level.txt

@@ -1,33 +1,7 @@
+subject: coding
 languages:
-  python:
+  - name: python
     topics:
-      - name: "Introduction to Python"
-        subtopics:
-          - name: "What is Python?"
-            difficulty: "easy"
-            description: "An overview of Python, its history, and its applications in various fields."
-          - name: "Python Syntax and Semantics"
-            difficulty: "easy"
-            description: "Basic rules and structure of Python code, including indentation and statement formation."
-          - name: "Hello, World!"
-            difficulty: "easy"
-            description: "Writing your first simple Python program to display a greeting message."
-
-      - name: "Variables and Data Types"
-        subtopics:
-          - name: "Variables"
-            difficulty: "easy"
-            description: "Understanding how to create and use variables to store data in Python."
-          - name: "Data Types"
-            difficulty: "easy"
-            description: "Introduction to different data types in Python such as integers, floats, strings, and booleans."
-          - name: "Type Conversion"
-            difficulty: "medium"
-            description: "Converting data from one type to another, such as from strings to integers."
-          - name: "String Manipulation"
-            difficulty: "medium"
-            description: "Techniques for modifying and working with string data, including slicing and concatenation."
-
       - name: "Operators"
         subtopics:
           - name: "Arithmetic Operators"

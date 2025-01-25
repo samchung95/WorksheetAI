@@ -1,47 +1,29 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["worksheetai"]
+package-dir = {"" = "src"}
+include-package-data = true
+
 [project]
 name = "worksheetai"
 version = "0.1.0"
 description = "AI-powered worksheet generator"
-authors = [
-    {name = "Your Name", email = "your.email@example.com"},
-]
-dependencies = [
-    "click>=8.0.0",
-    "PyYAML>=6.0",
-    "llama-index",
-    "llama-index-llms-openai",
-    "llama-index-program-openai",
-]
-requires-python = ">=3.9"
+authors = [{name = "Your Name", email = "your.email@example.com"}]
 readme = "README.md"
-license = {file = "LICENSE"}
-
-[project.urls]
-Homepage = "https://github.com/yourusername/worksheetai"
-Repository = "https://github.com/yourusername/worksheetai.git"
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[tool.hatch.build.targets.wheel]
-packages = ["worksheetai"]
+requires-python = ">=3.8"
+dependencies = [
+    "pydantic>=2.0",
+    "pyyaml>=6.0",
+    "llama-index>=0.10.0",
+    "openai>=1.3.0",
+    "python-dotenv>=0.21.0"
+]
 
 [project.scripts]
 worksheetai = "worksheetai.cli:main"
 
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-python_files = ["test_*.py"]
-addopts = "-ra -q"
-
-[tool.mypy]
-python_version = "3.9"
-strict = true
-warn_return_any = true
-warn_unused_configs = true
-
-[tool.ruff]
-select = ["E", "F", "B"]
-ignore = ["E501"]
-line-length = 88
+[tool.setuptools.package-data]
+"*" = ["*.yaml", "*.yml"]

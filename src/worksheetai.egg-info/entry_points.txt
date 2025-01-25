@@ -1,0 +1,2 @@
+[console_scripts]
+worksheetai = worksheetai.cli:main

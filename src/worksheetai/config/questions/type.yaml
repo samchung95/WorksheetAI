@@ -1,0 +1,30 @@
+question_types:
+  code_completion:
+    description: "Complete partial code implementations"
+    levels:
+      easy:
+        example: "Complete this function to calculate factorial"
+      medium: 
+        example: "Implement a decorator with specific behavior"
+      hard:
+        example: "Write a context manager for resource handling"
+
+  debugging:
+    description: "Identify and fix code errors"
+    levels:
+      easy:
+        example: "Find syntax errors in code snippet"
+      medium:
+        example: "Debug logical errors in algorithm"
+      hard:
+        example: "Diagnose race conditions in concurrent code"
+
+  algorithm_design:
+    description: "Create solutions to computational problems" 
+    levels:
+      easy:
+        example: "Implement basic sorting algorithm"
+      medium:
+        example: "Design graph traversal solution"
+      hard:
+        example: "Create distributed system consensus algorithm"
