@@ -1,64 +1,115 @@
-import argparse
+import questionary
+import json
+import random
 from pathlib import Path
+from typing import List, Dict
+from worksheetai.models import QuestionBank, DifficultyLevel
+from worksheetai.ai import WorksheetGenerator
 import yaml
-from .ai import WorksheetGenerator
 
-def load_config(config_path: Path):
-    """Load YAML configuration file"""
-    try:
-        with open(config_path, 'r') as f:
-            return yaml.safe_load(f)
-    except Exception as e:
-        print(f"Error loading config: {e}")
-        exit(1)
+def select_subject(generator: WorksheetGenerator) -> str:
+    """Interactive subject selection using loaded config"""
+    return questionary.select(
+        "Select subject:",
+        choices=list(generator.subjects.keys())
+    ).ask()
+
+def select_modules(generator: WorksheetGenerator, subject: str) -> List[str]:
+    """Interactive module selection using checkboxes"""
+    module_configs = generator.subjects[subject]
+
+    return questionary.checkbox(
+        "Select modules:",
+        choices=[module.name for module in module_configs.modules],
+        validate=lambda result: len(result) >= 1
+    ).ask()
+
+def select_topics(generator: WorksheetGenerator, subject: str, modules: List[str]) -> List[str]:
+    """Interactive topic selection from selected modules"""
+    module_configs = generator.subjects[subject]
+    all_topics = [topic for module in module_configs.modules 
+                 if module.name in modules 
+                 for topic in module.topics]
+    
+    return questionary.checkbox(
+        "Select topics:",
+        choices=[topic.name for topic in all_topics],
+        validate=lambda result: len(result) >= 1
+    ).ask()
+
+def select_question_types(generator: WorksheetGenerator) -> List[str]:
+    """Interactive question type selection using checkboxes"""
+    return questionary.checkbox(
+        "Select question types:",
+        choices=list(generator.question_types.keys())
+    ).ask()
+
+def select_min_difficulty() -> str:
+    return questionary.select(
+        "Select minimum difficulty:",
+        choices=["easy", "medium", "hard"]
+    ).ask()
+
+def select_max_difficulty(min_difficulty: str) -> str:
+    choices = []
+    if min_difficulty == "easy":
+        choices = ["easy", "medium", "hard"]
+    elif min_difficulty == "medium":
+        choices = ["medium", "hard"]
+    else:
+        choices = ["hard"]
+        
+    return questionary.select(
+        "Select maximum difficulty:",
+        choices=choices,
+        default=choices[-1]
+    ).ask()
+
+def get_question_count() -> int:
+    return int(questionary.text(
+        "Number of questions:",
+        validate=lambda val: val.isdigit() and int(val) > 0
+    ).ask())
+
+def generate_config(subject: str, topics: List[str], min_difficulty: str, max_difficulty: str, count: int, question_types: List[str]) -> Dict:
+    """Generate worksheet configuration with actual questions"""
+    bank = QuestionBank()
+    filtered_questions = bank.get_questions(subject, topics, min_difficulty, max_difficulty)
+    selected_questions = bank.select_questions(filtered_questions, count)
+    
+    return {
+        "version": "1.0",
+        "selection": {
+            "topics": topics,
+            "min_difficulty": min_difficulty,
+            "max_difficulty": max_difficulty,
+            "total_questions": count,
+            "questions": selected_questions,
+            "question_types": question_types
+        }
+    }
 
 def main():
-    parser = argparse.ArgumentParser(
-        description='WorksheetAI Configuration Generator',
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter
-    )
-    
-    # Required arguments
-    parser.add_argument('--subject', required=True, help='Subject area (e.g. coding)')
-    parser.add_argument('--language', required=True, help='Programming language (e.g. python)')
-    parser.add_argument('--topics', required=True, help='Comma-separated list of topics')
-    parser.add_argument('--question-types', required=True, help='Comma-separated list of question types')
-    parser.add_argument('--num-questions', type=int, required=True, help='Number of questions to generate')
-    
-    # Optional arguments
-    parser.add_argument('--difficulty', choices=['easy', 'medium', 'hard'], default='medium',
-                      help='Question difficulty level')
-    parser.add_argument('--flavour', help='Worksheet theme/flavour (e.g. interview-prep)')
-    
-    # Output options
-    parser.add_argument('-o', '--output', type=Path, default='worksheet_config.yaml',
-                      help='Output file path')
-    parser.add_argument('--format', choices=['yaml', 'json'], default='yaml',
-                      help='Output file format')
-
-    args = parser.parse_args()
+    print("WorksheetAI Configuration Generator\n")
     
     generator = WorksheetGenerator()
     
-    config = generator.generate_config(
-        subject=args.subject,
-        language=args.language,
-        selected_topics=args.topics.split(','),
-        selected_question_types=args.question_types.split(','),
-        num_questions=args.num_questions,
-        flavour=args.flavour,
-        difficulty=args.difficulty
-    )
+    subject = select_subject(generator)
+    modules = select_modules(generator, subject)
+    topics = select_topics(generator, subject, modules)
+    min_difficulty = select_min_difficulty()
+    max_difficulty = select_max_difficulty(min_difficulty)
+    count = get_question_count()
+    
+    question_types = select_question_types(generator)
+    config = generate_config(subject, topics, min_difficulty, max_difficulty, count, question_types)
     
     # Save output
+    output_path = questionary.path("Save configuration to:").ask()
     try:
-        with open(args.output, 'w') as f:
-            if args.format == 'yaml':
-                yaml.dump(config, f)
-            else:
-                import json
-                json.dump(config, f, indent=2)
-        print(f"Configuration saved to {args.output}")
+        with open(output_path, 'w') as f:
+            json.dump(config, f, indent=2)
+        print(f"\nConfiguration saved to {output_path}")
     except Exception as e:
         print(f"Error saving config: {e}")
         exit(1)

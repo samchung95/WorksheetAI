@@ -5,25 +5,27 @@ import random
 import os
 import yaml
 from .models import (
-    DifficultyLevel, Topic, QuestionType,
-    LanguageConfig, SubjectConfig, WorksheetConfig, Question
+    DifficultyLevel, QuestionType, ModuleConfig, WorksheetConfig, Question
 )
 
 class WorksheetGenerator:
-    def __init__(self):
+    def __init__(self, subject_filename="coding.yaml", question_type_filename="type.yaml"):
+        self.subject_filename = subject_filename
+        self.question_type_filename=question_type_filename
         self.subjects = self._load_subjects()
         self.question_types = self._load_question_types()
+        
 
-    def _load_subjects(self) -> Dict[str, SubjectConfig]:
+    def _load_subjects(self) -> Dict[str, ModuleConfig]:
         """Load and parse subjects from coding.yaml"""
-        config_path = os.path.join(os.path.dirname(__file__), "config/subjects/coding.yaml")
+        config_path = os.path.join(os.path.dirname(__file__), f"config/subjects/{self.subject_filename}")
         with open(config_path) as f:
             raw = yaml.safe_load(f)
-        return {subj["name"]: SubjectConfig(**subj) for subj in raw["subjects"]}
+        return {self.subject_filename.split(".")[0]: ModuleConfig(**raw)}
 
     def _load_question_types(self) -> Dict[str, QuestionType]:
         """Load and parse question types from type.yaml"""
-        config_path = os.path.join(os.path.dirname(__file__), "config/questions/type.yaml")
+        config_path = os.path.join(os.path.dirname(__file__), f"config/questions/{self.question_type_filename}")
         with open(config_path) as f:
             raw = yaml.safe_load(f)
         return {qt["name"]: QuestionType(**qt) for qt in raw["question_types"]}

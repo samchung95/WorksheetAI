@@ -1,30 +1,39 @@
 question_types:
-  code_completion:
+  - name: code_completion
     description: "Complete partial code implementations"
-    levels:
+    examples:
       easy:
-        example: "Complete this function to calculate factorial"
-      medium: 
-        example: "Implement a decorator with specific behavior"
+        - "Complete this function to calculate factorial"
+        - "Implement basic arithmetic operations"
+      medium:
+        - "Implement a decorator with specific behavior"
+        - "Handle file I/O operations"
       hard:
-        example: "Write a context manager for resource handling"
+        - "Write a context manager for resource handling"
+        - "Implement async/await patterns"
 
-  debugging:
+  - name: debugging
     description: "Identify and fix code errors"
-    levels:
+    examples:
       easy:
-        example: "Find syntax errors in code snippet"
+        - "Find syntax errors in code snippet"
+        - "Fix variable name typos"
       medium:
-        example: "Debug logical errors in algorithm"
+        - "Debug logical errors in algorithm"
+        - "Resolve type mismatch issues"
       hard:
-        example: "Diagnose race conditions in concurrent code"
+        - "Diagnose race conditions in concurrent code"
+        - "Fix memory leaks in long-running processes"
 
-  algorithm_design:
-    description: "Create solutions to computational problems" 
-    levels:
+  - name: algorithm_design
+    description: "Create solutions to computational problems"
+    examples:
       easy:
-        example: "Implement basic sorting algorithm"
+        - "Implement basic sorting algorithm"
+        - "Create simple data structures"
       medium:
-        example: "Design graph traversal solution"
+        - "Design graph traversal solution"
+        - "Optimize search algorithms"
       hard:
-        example: "Create distributed system consensus algorithm"
+        - "Create distributed system consensus algorithm"
+        - "Develop machine learning pipelines"
