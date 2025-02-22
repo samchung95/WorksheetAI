@@ -1,0 +1,108 @@
+question_types:
+  - name: fill_in_the_blank
+    description: >
+      This question presents a code snippet with several blanks that students must complete.
+      The blanks correspond to missing code components needed to implement the intended functionality.
+    example: |
+      # Define the festival menu as a dictionary with two stalls.
+      festival_menu = {
+          'Stall A': [
+              {'name': 'Laksa', 'price': 10, 'festivalSpecial': True},
+              {'name': 'Satay', 'price': 15, 'festivalSpecial': False}
+          ],
+          'Stall B': [
+              {'name': 'Nasi Lemak', 'price': 8, 'festivalSpecial': True},
+              {'name': 'Mee Goreng', 'price': 12, 'festivalSpecial': True}
+          ]
+      }
+      
+      # Define a lambda function to apply a 10% discount.
+      # Expected operation: multiply the given number by 0.9.
+      discount = lambda x: ____  # Replace ____ with the proper arithmetic expression
+      
+      # Define a lambda function to filter festival special dishes.
+      # Expected operation: check if the value of 'festivalSpecial' in the dictionary equals True.
+      is_festival_special = lambda dish: dish.get(____) == ____  # Replace the blanks with key 'festivalSpecial' and boolean True
+      
+      # Using dictionary comprehensions, create a new dictionary.
+      discounted_specials = {
+          stall: [
+              {
+                  'name': dish[____],   # Replace blank to access the dish name
+                  'price': discount(dish[____])  # Replace blank to access the dish's original price
+              }
+              for dish in festival_menu[stall]
+              if ____(dish)  # Replace blank with a function call to check if the dish is a festival special (is_festival_special)
+          ]
+          for stall in ____  # Replace blank to properly iterate over all stalls (keys of festival_menu)
+      }
+      
+      print(discounted_specials)
+
+  - name: code_tracing
+    description: >
+      This question asks students to follow the execution path of a code snippet.
+      Students must simulate the execution step-by-step to arrive at the correct output.
+    example: |
+      #  Run the code and answer the question based on the final value of the starting_number.
+      import random
+      
+      starting_number = random.randint(1, 100)
+      
+      def check_number(number):
+
+          if number % 2 == 0:
+              number //= 3
+      
+          if number % 3 == 0:
+              number *= 2
+              if number > 50:
+                  number -= 10
+
+          elif number % 5 == 0:
+              number += 10
+
+          else:
+              # In all other cases, add 5.
+              number += 5
+          
+          return number
+
+      if input(f'What is the result of {starting_number}? ') == str(check_number(starting_number)):
+          print('Correct!')
+      else:
+          print('Incorrect!')
+
+  - name: code_completion
+    description: >
+      This question requires students to write a complete piece of code from scratch.
+      The student is given clear requirements for a function, including its name, parameters, and expected behavior.
+    example: |
+      # Write a function that determines if a number is prime.
+      # Requirements:
+      #   • Function Name: is_prime
+      #   • Parameter: a single integer n
+      #   • Return: True if n is prime, False otherwise (consider numbers less than 2 as non-prime)
+      def is_prime(n):
+          # Your complete implementation here
+      
+      # Test your function by checking each number from 1 to 20.
+      for i in range(1, 21):
+          print(f"{i} is prime: {is_prime(i)}")
+
+  - name: leetcode_style
+    description: >
+      This question follows a style similar to coding challenges found on platforms like LeetCode.
+      Students need to design and implement an algorithm to solve a problem based on the provided constraints.
+    example: |
+      # Given a list of integers, implement the function sum_even to return the sum of all even numbers.
+      # Requirements:
+      #   • Function Name: sum_even
+      #   • Parameter: nums, a list of integers
+      #   • Return: the sum of even numbers in nums by manually iterating and checking each number
+      def sum_even(nums):
+          # Your implementation here
+      
+      # Test the function with an example list.
+      test_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      print(sum_even(test_list))  # Expected output: 30
